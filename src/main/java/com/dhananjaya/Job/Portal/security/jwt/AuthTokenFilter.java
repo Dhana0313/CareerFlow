@@ -52,6 +52,8 @@ public class AuthTokenFilter extends OncePerRequestFilter {
         }
 
         filterChain.doFilter(request, response);
+        System.out.println("Filter is running!");
+
     }
 
     private String parseJwt(HttpServletRequest request) {

@@ -2,6 +2,7 @@ package com.dhananjaya.Job.Portal.controller;
 
 import com.dhananjaya.Job.Portal.dto.auth.MessageResponse;
 import com.dhananjaya.Job.Portal.dto.company.CompanyRequest;
+import com.dhananjaya.Job.Portal.dto.company.CompanyResponse;
 import com.dhananjaya.Job.Portal.model.Company;
 import com.dhananjaya.Job.Portal.security.services.UserDetailsImpl;
 import com.dhananjaya.Job.Portal.service.CompanyService;
@@ -35,11 +36,10 @@ public class CompanyController {
 
     @GetMapping("/my-companies")
     @PreAuthorize("hasRole('EMPLOYER') or hasRole('ADMIN')")
-    public ResponseEntity<List<Company>> getMyCompanies(
-            @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public ResponseEntity<List<CompanyResponse>> getMyCompanies(
+                                                                 @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
-        // 1. Get companies for the logged-in user
-        List<Company> companies = companyService.getCompaniesByUser(userDetails.getId());
+        List<CompanyResponse> companies = companyService.getCompaniesByUser(userDetails.getId());
 
         return ResponseEntity.ok(companies);
     }

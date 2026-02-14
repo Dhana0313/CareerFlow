@@ -63,7 +63,7 @@ public class JobService {
 
     public List<JobPostResponse> getAllJobs() {
         List<JobPost> jobs = jobPostRepository.findByIsActiveTrue();
-        
+
         return jobs.stream().map(this::mapToResponse).collect(Collectors.toList());
     }
 
@@ -81,12 +81,11 @@ public class JobService {
                 job.getPostedAt(),
                 job.isActive(),
                 job.getCompany().getId(),
-                job.getCompany().getName()
-        );
+                job.getCompany().getName());
     }
 
-    public List<JobPostResponse> searchJobs(String keyword, String location, JobType type, JobLocation locationType) {
-        
+    public List<JobPostResponse> searchJobs(String keyword, String location, JobType type, JobLocation locationType, Double minPay) {
+
         // Start with a default condition: job must be active
         Specification<JobPost> spec = Specification.where((root, query, cb) -> cb.isTrue(root.get("isActive")));
 
@@ -103,10 +102,13 @@ public class JobService {
         if (locationType != null) {
             spec = spec.and(JobPostSpecification.hasLocationType(locationType));
         }
+        if (minPay != null) {
+            spec = spec.and(JobPostSpecification.hasSalary(minPay));
+        }
 
         // Execute the query
         List<JobPost> jobs = jobPostRepository.findAll(spec);
-        
+
         return jobs.stream().map(this::mapToResponse).collect(Collectors.toList());
     }
 }

@@ -28,7 +28,7 @@ public class JobController {
     public ResponseEntity<?> createJobPost(
             @Valid @RequestBody JobPostRequest jobPostRequest,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        
+
         // Pass the request and the user's ID to the service
         jobService.createJobPost(jobPostRequest, userDetails.getId());
 
@@ -36,7 +36,8 @@ public class JobController {
     }
 
     @GetMapping
-    // No @PreAuthorize means authenticated users (Candidates/Employers) can access this.
+    // No @PreAuthorize means authenticated users (Candidates/Employers) can access
+    // this.
     // (If you want guests to see it, we need to update WebSecurityConfig)
     public ResponseEntity<List<JobPostResponse>> getAllJobs() {
         return ResponseEntity.ok(jobService.getAllJobs());
@@ -47,8 +48,9 @@ public class JobController {
             @RequestParam(required = false) String keyword,
             @RequestParam(required = false) String location,
             @RequestParam(required = false) JobType type,
-            @RequestParam(required = false) JobLocation locationType) {
-            
-        return ResponseEntity.ok(jobService.searchJobs(keyword, location, type, locationType));
+            @RequestParam(required = false) JobLocation locationType,
+            @RequestParam(required = false) Double minSalary) {
+
+        return ResponseEntity.ok(jobService.searchJobs(keyword, location, type, locationType, minSalary));
     }
 }

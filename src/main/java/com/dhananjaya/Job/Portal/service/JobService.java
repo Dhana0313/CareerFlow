@@ -52,7 +52,8 @@ public class JobService {
                 .location(request.getLocation())
                 .type(request.getType())
                 .locationType(request.getLocationType())
-                .salaryRange(request.getSalaryRange())
+                .minSalary(request.getMinSalary())
+                .maxSalary(request.getMaxSalary())
                 .company(company)
                 .postedBy(user)
                 .build(); // isActive defaults to true thanks to @Builder.Default
@@ -75,7 +76,8 @@ public class JobService {
                 job.getLocation(),
                 job.getType(),
                 job.getLocationType(),
-                job.getSalaryRange(),
+                job.getMinSalary(),
+                job.getMaxSalary(),
                 job.getPostedAt(),
                 job.isActive(),
                 job.getCompany().getId(),

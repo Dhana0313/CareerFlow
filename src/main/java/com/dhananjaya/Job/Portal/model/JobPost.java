@@ -49,7 +49,8 @@ public class JobPost {
     @Enumerated(EnumType.STRING)
     private JobLocation locationType; // REMOTE, ONSITE
 
-    private String salaryRange; // e.g., "50k - 80k"
+    private Double minSalary; // e.g., 50000.00
+    private Double maxSalary; // e.g., 80000.00
 
     @Builder.Default
     private boolean isActive = true; // Job is Open by default

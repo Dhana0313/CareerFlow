@@ -54,4 +54,19 @@ public class JobPostSpecification {
             return criteriaBuilder.equal(root.get("locationType"), locationType);
         };
     }
+
+    // Filter: "Show me jobs that pay AT LEAST this much"
+    public static Specification<JobPost> hasSalary(Double minPay) {
+        return (root, query, criteriaBuilder) -> {
+            if (minPay == null) {
+                return null;
+            }
+            // Logic: Job's minSalary >= User's minPay
+            // Example: User wants 60k. Job pays 50k-80k. 
+            // Matches because 80k > 60k? Or strict match?
+            
+            // Standard Logic: "Show jobs where max budget is within range"
+            return criteriaBuilder.greaterThanOrEqualTo(root.get("maxSalary"), minPay);
+        };
+    }
 }

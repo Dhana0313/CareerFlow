@@ -18,7 +18,8 @@ public class JobPostResponse {
     private String location;
     private JobType type;
     private JobLocation locationType;
-    private String salaryRange;
+    private Double minSalary;
+    private Double maxSalary;
     private LocalDateTime postedAt;
     private boolean isActive;
     

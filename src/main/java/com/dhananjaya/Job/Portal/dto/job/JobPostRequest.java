@@ -23,7 +23,8 @@ public class JobPostRequest {
     @NotNull(message = "Location type is required")
     private JobLocation locationType; // REMOTE, ONSITE...
     
-    private String salaryRange;
+    private Double minSalary;
+    private Double maxSalary;
 
     @NotNull(message = "Company ID is required")
     private Long companyId;

@@ -5,10 +5,15 @@ import com.dhananjaya.Job.Portal.dto.job.JobPostResponse;
 import com.dhananjaya.Job.Portal.model.Company;
 import com.dhananjaya.Job.Portal.model.JobPost;
 import com.dhananjaya.Job.Portal.model.User;
+import com.dhananjaya.Job.Portal.model.enums.JobLocation;
+import com.dhananjaya.Job.Portal.model.enums.JobType;
 import com.dhananjaya.Job.Portal.repository.CompanyRepository;
 import com.dhananjaya.Job.Portal.repository.JobPostRepository;
 import com.dhananjaya.Job.Portal.repository.UserRepository;
+import com.dhananjaya.Job.Portal.repository.spec.JobPostSpecification;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -47,7 +52,8 @@ public class JobService {
                 .location(request.getLocation())
                 .type(request.getType())
                 .locationType(request.getLocationType())
-                .salaryRange(request.getSalaryRange())
+                .minSalary(request.getMinSalary())
+                .maxSalary(request.getMaxSalary())
                 .company(company)
                 .postedBy(user)
                 .build(); // isActive defaults to true thanks to @Builder.Default
@@ -57,7 +63,7 @@ public class JobService {
 
     public List<JobPostResponse> getAllJobs() {
         List<JobPost> jobs = jobPostRepository.findByIsActiveTrue();
-        
+
         return jobs.stream().map(this::mapToResponse).collect(Collectors.toList());
     }
 
@@ -70,11 +76,39 @@ public class JobService {
                 job.getLocation(),
                 job.getType(),
                 job.getLocationType(),
-                job.getSalaryRange(),
+                job.getMinSalary(),
+                job.getMaxSalary(),
                 job.getPostedAt(),
                 job.isActive(),
                 job.getCompany().getId(),
-                job.getCompany().getName()
-        );
+                job.getCompany().getName());
+    }
+
+    public List<JobPostResponse> searchJobs(String keyword, String location, JobType type, JobLocation locationType, Double minPay) {
+
+        // Start with a default condition: job must be active
+        Specification<JobPost> spec = Specification.where((root, query, cb) -> cb.isTrue(root.get("isActive")));
+
+        // Dynamically add filters if they are provided
+        if (keyword != null && !keyword.isEmpty()) {
+            spec = spec.and(JobPostSpecification.hasKeyword(keyword));
+        }
+        if (location != null && !location.isEmpty()) {
+            spec = spec.and(JobPostSpecification.hasLocation(location));
+        }
+        if (type != null) {
+            spec = spec.and(JobPostSpecification.hasType(type));
+        }
+        if (locationType != null) {
+            spec = spec.and(JobPostSpecification.hasLocationType(locationType));
+        }
+        if (minPay != null) {
+            spec = spec.and(JobPostSpecification.hasSalary(minPay));
+        }
+
+        // Execute the query
+        List<JobPost> jobs = jobPostRepository.findAll(spec);
+
+        return jobs.stream().map(this::mapToResponse).collect(Collectors.toList());
     }
 }

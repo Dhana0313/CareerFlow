@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  # 1. The Database Service
+  postgres:
+    image: postgres:16
+    container_name: careerflow-db
+    environment:
+      POSTGRES_DB: careerflow_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  # 2. Your Application Service
+  app:
+    build: .
+    container_name: careerflow-api
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    environment:
+      # Connect to the 'postgres' service container, not localhost
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/careerflow_db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+
+volumes:
+  postgres_data:

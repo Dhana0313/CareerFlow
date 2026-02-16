@@ -54,16 +54,13 @@ You can run the entire application (API + Database) with a single command, no Ja
 ### Steps
 1. **Clone the Repository**
    ```bash
-   git clone [https://github.com/yourusername/CareerFlow.git](https://github.com/yourusername/CareerFlow.git)
+   git clone https://github.com/Dhana0313/CareerFlow.git
    cd CareerFlow
 
-```
 
 2. **Run with Docker Compose**
-```bash
-docker-compose up --build
-
-```
+   ```bash
+   docker-compose up --build
 
 
 * This will:
@@ -80,12 +77,8 @@ docker-compose up --build
 
 
 4. **Stop the Application**
-```bash
-docker-compose down
-
-```
-
-
+   ```bash
+   docker-compose down
 
 ---
 

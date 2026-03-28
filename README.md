@@ -5,6 +5,7 @@
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-blue?style=flat&logo=postgresql)
 ![Docker](https://img.shields.io/badge/Docker-Enabled-blue?style=flat&logo=docker)
 ![License](https://img.shields.io/badge/License-MIT-lightgrey)
+![CI/CD](https://github.com/Dhana0313/CareerFlow/actions/workflows/ci.yml/badge.svg)
 
 **CareerFlow** is a robust, scalable backend API for a modern recruitment platform. It connects **Employers** with **Candidates**, facilitating job posting, application tracking, and profile management. Built with a focus on security, performance, and developer experience.
 
